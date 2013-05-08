@@ -17,12 +17,31 @@ using System.Diagnostics;
 
 namespace MultiColumnTreeView
 {
+    public class indexedString
+    {
+        public int index { get; set; }
+        public string data { get; set; }
+
+        public indexedString(int idx, string d) { index = idx; data = d; }
+    }
+
+
+
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class Window1 : Window
     {
-        public Ship ship = new Ship();
+
+        private Ship _ship = new Ship();
+        public Ship ship
+        {
+            get { return _ship; }
+            set
+            {
+                _ship = value;
+            }
+        }
 
         public Window1()
         {
@@ -45,6 +64,10 @@ namespace MultiColumnTreeView
             ship.AddSpace(new Space("Region 12", "M 143,168  143,202 168,204 168,170 143,168"));
 
             ic.ItemsSource = ship.Spaces;
+
+            List<indexedString> items = new List<indexedString>();
+            for (int i = 1; i <= 50; i++) items.Add(new indexedString(i, "Frame " + i.ToString()));
+            cmbFrames.ItemsSource = items;
 
             /*
             BallastSpace th = new BallastSpace("Thing 1", 0, 0);
@@ -110,25 +133,11 @@ namespace MultiColumnTreeView
 
         }
 
+        int curSpaceID = 1;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string newName = "";
-
-            if (GetString.getString("Space name", "New Space", ref newName))
-            {
-                ship.AddBallastSpace(new BallastSpace(newName));
-                //things.Add(new BallastSpace(newName, 0, 0, null));
-            }
-
-            /*
-            string ret = "";
-            foreach (space s in (System.Collections.ObjectModel.ObservableCollection<space>)ic.ItemsSource)
-            {
-                ret += s.Name + "    " + s.IsSelected + "\n";
-            }
-
-            MessageBox.Show(ret);
-             */
+            string newName = "New Space [" + curSpaceID++.ToString() + "]";
+            ship.AddBallastSpace(new BallastSpace(newName));
         }
 
     }

@@ -24,13 +24,13 @@ namespace MultiColumnTreeView
         {
         }
 
-        public static readonly DependencyProperty BindingNameProperty = DependencyProperty.Register("BindingName", typeof(Binding), typeof(CustomGridViewColumn), new PropertyMetadata(new PropertyChangedCallback(OnBindingChanged)));
+        public static readonly DependencyProperty BindingNameProperty = DependencyProperty.Register("BindingName", typeof(string), typeof(CustomGridViewColumn), new PropertyMetadata(new PropertyChangedCallback(OnBindingChanged)));
 
-        public Binding BindingName
+        public string BindingName
         {
             get
             {
-                return (Binding)GetValue(BindingNameProperty);
+                return (string)GetValue(BindingNameProperty);
             }
             set
             {

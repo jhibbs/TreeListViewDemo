@@ -3,19 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:MultiColumnTreeView"
         xmlns:tk="http://schemas.microsoft.com/wpf/2008/toolkit"
-        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" Title="Window1"
-        Height="300" Width="800">
+        Height="450" Width="1200" x:Name="Win1">
     <Window.Resources>
-        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" x:Name="GroupBackground" x:Key="GroupBackground">
-            <GradientStop Color="#E0F1FF" Offset="0" />
-            <GradientStop Color="#AAD9FF" Offset="0.4" />
-            <GradientStop Color="#E0F1FF"  Offset="1" />
-        </LinearGradientBrush>
-        <LinearGradientBrush x:Key="HeaderBrush" StartPoint="0.5,0" EndPoint="0.5,1">
-            <GradientStop Color="AliceBlue" Offset="0.0" />
-            <GradientStop Color="LightBlue" Offset="0.9" />
-            <GradientStop Color="White" Offset="1.0" />
-        </LinearGradientBrush>
+
+        <ResourceDictionary Source="Templates.xaml" />
+
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -23,409 +15,62 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid.Resources>
-
-            <!-- The plus / minus buttons as paths -->
-            <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
-                <Setter Property="Focusable" Value="False" />
-                <Setter Property="Width" Value="19" />
-                <Setter Property="Height" Value="13" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ToggleButton}">
-                            <Border Width="19" Height="13" Background="Transparent">
-                                <Border Width="9" Height="9" BorderThickness="1"
-                                        BorderBrush="#FF7898B5" CornerRadius="1"
-                                        SnapsToDevicePixels="true">
-                                    <Border.Background>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <LinearGradientBrush.GradientStops>
-                                                <GradientStop Color="White" Offset=".2" />
-                                                <GradientStop Color="#FFC0B7A6" Offset="1" />
-                                            </LinearGradientBrush.GradientStops>
-                                        </LinearGradientBrush>
-                                    </Border.Background>
-                                    <Path x:Name="ExpandPath" Margin="1,1,1,1" Fill="Black"
-                                            Data="M 0 2 L 0 3 L 2 3 L 2 5 L 3 5 L 3 3 L 5 3 L 5 2 L 3 2 L 3 0 L 2 0 L 2 2 Z" />
-                                </Border>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="Data" TargetName="ExpandPath"
-                                            Value="M 0 2 L 0 3 L 5 3 L 5 2 Z" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <!-- This defines the Indent setter so that it can be used after. -->
-            <local:LevelToIndentConverter x:Key="LevelToIndentConverter" />
-            <local:ValConverter x:Key="ValConverter" />
-
-            <DataTemplate  x:Key="ct" >
-                <DockPanel >
-                    <ToggleButton x:Name="Expander"
-                            Style="{StaticResource ExpandCollapseToggleStyle}"
-                            Margin="{Binding DataContext,Converter={StaticResource LevelToIndentConverter},RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}"
-                            IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}"
-                            ClickMode="Press" />
-                </DockPanel>
-                <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding Path=HasItems,RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}" Value="False">
-                        <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>
-            <Style TargetType="{x:Type TreeViewItem}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="TreeViewItem" >
-
-                            <Border Margin="2" >
-                                <Border BorderThickness="0" BorderBrush="Black"  x:Name="bElement" CornerRadius="4">
-                                    <Grid x:Name="RootElement" >
-
-                                        <!-- Color definitions -->
-                                        <Grid.Resources>
-                                            <SolidColorBrush x:Key="LineColor" Color="#FF000000" />
-                                            <SolidColorBrush x:Key="FocusBrush" Color="#FF000000" />
-                                            <SolidColorBrush x:Key="SelectionOuterBorderBrush" Color="#FFA8C9D8" />
-                                            <Color x:Key="SelectionOuterFillColor1">#FF00CCFF</Color>
-                                            <Color x:Key="SelectionOuterFillColor2">#FF9BB1FF</Color>
-                                            <SolidColorBrush x:Key="SelectionInnerBorderBrush" Color="#FFFFFFFF" />
-                                            <Color x:Key="SelectionInnerFillColor1">#E5FFFFFF</Color>
-                                            <Color x:Key="SelectionInnerFillColor2">#4DFFFFFF</Color>
-                                            <Color x:Key="SelectionInnerFillColor3">#00FFFFFF</Color>
-                                            <Color x:Key="SelectionInnerFillColor4">#33FFFFFF</Color>
-
-                                            <SolidColorBrush x:Key="SelectionUnfocusedOuterBorderBrush" Color="#FFA8C9D8" />
-                                            <Color x:Key="SelectionUnfocusedOuterFillColor1">#FFB7C6D0</Color>
-                                            <Color x:Key="SelectionUnfocusedOuterFillColor2">#FFA2A9C1</Color>
-
-                                            <SolidColorBrush x:Key="SelectionUnfocusedInnerBorderBrush" Color="#FFFFFFFF" />
-                                            <Color x:Key="SelectionUnfocusedInnerFillColor1">#E5FFFFFF</Color>
-                                            <Color x:Key="SelectionUnfocusedInnerFillColor2">#4DFFFFFF</Color>
-                                            <Color x:Key="SelectionUnfocusedInnerFillColor3">#00FFFFFF</Color>
-                                            <Color x:Key="SelectionUnfocusedInnerFillColor4">#33FFFFFF</Color>
-
-                                            <SolidColorBrush x:Key="MouseOverOuterBorderBrush" Color="#FFC3DCE8" />
-                                            <Color x:Key="MouseOverOuterFillColor1">#FF00CCFF</Color>
-                                            <Color x:Key="MouseOverOuterFillColor2">#FF9BB1FF</Color>
-
-                                            <SolidColorBrush x:Key="MouseOverInnerBorderBrush"
-                                            Color="#FFFFFFFF"></SolidColorBrush>
-                                            <Color x:Key="MouseOverInnerFillColor1">#FFFFFFFF</Color>
-                                            <Color x:Key="MouseOverInnerFillColor2">#99FFFFFF</Color>
-                                            <Color x:Key="MouseOverInnerFillColor3">#4CFFFFFF</Color>
-                                            <Color x:Key="MouseOverInnerFillColor4">#66FFFFFF</Color>
-
-                                            <SolidColorBrush x:Key="LoadingVisualBrush" Color="#FF1562B7"></SolidColorBrush>
-                                        </Grid.Resources>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-
-                                        <Border SnapsToDevicePixels="true" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                            <Grid x:Name="HeaderRow" MinHeight="20">
-
-                                                <!-- Selection -->
-                                                <Border SnapsToDevicePixels="true" x:Name="SelectionVisual"
-                                                Visibility="Collapsed"
-                                                BorderBrush="{StaticResource SelectionOuterBorderBrush}"
-                                                BorderThickness="1" CornerRadius="3">
-                                                    <Border.Background>
-                                                        <LinearGradientBrush EndPoint="0.5,1"
-                                                        StartPoint="0.5,0">
-                                                            <GradientStop
-                                                            Color="{StaticResource SelectionOuterFillColor1}"
-                                                            Offset="0" />
-                                                            <GradientStop
-                                                            Color="{StaticResource SelectionOuterFillColor2}"
-                                                            Offset="1" />
-                                                        </LinearGradientBrush>
-                                                    </Border.Background>
-                                                    <Border CornerRadius="2"
-                                                    BorderBrush="{StaticResource SelectionInnerBorderBrush}"
-                                                    BorderThickness="2">
-                                                        <Border.Background>
-                                                            <LinearGradientBrush EndPoint="0.5,1"
-                                                            StartPoint="0.5,0">
-                                                                <GradientStop
-                                                                Color="{StaticResource SelectionInnerFillColor1}"
-                                                                Offset="0" />
-
-                                                                <GradientStop
-                                                                Color="{StaticResource SelectionInnerFillColor2}"
-                                                                Offset="0.5" />
-                                                                <GradientStop
-                                                                Color="{StaticResource SelectionInnerFillColor3}"
-                                                                Offset="0.511" />
-                                                                <GradientStop
-                                                                Color="{StaticResource SelectionInnerFillColor4}"
-                                                                Offset="1" />
-                                                            </LinearGradientBrush>
-                                                        </Border.Background>
-
-                                                    </Border>
-                                                </Border>
-
-                                                <!-- Selection Unfocused-->
-                                                <Border x:Name="SelectionUnfocusedVisual"
-                                                Visibility="Collapsed"
-                                                BorderBrush="{StaticResource SelectionUnfocusedOuterBorderBrush}"
-                                                BorderThickness="1" CornerRadius="3">
-                                                    <Border.Background>
-                                                        <LinearGradientBrush EndPoint="0.5,1"
-                                                        StartPoint="0.5,0">
-                                                            <GradientStop
-                                                            Color="{StaticResource SelectionUnfocusedOuterFillColor1}"
-                                                            Offset="0" />
-                                                            <GradientStop
-                                                            Color="{StaticResource SelectionUnfocusedOuterFillColor2}"
-                                                            Offset="1" />
-                                                        </LinearGradientBrush>
-                                                    </Border.Background>
-                                                    <Border CornerRadius="2"
-                                                    BorderBrush="{StaticResource SelectionUnfocusedInnerBorderBrush}"
-                                                    BorderThickness="2">
-                                                        <Border.Background>
-                                                            <LinearGradientBrush EndPoint="0.5,1"
-                                                            StartPoint="0.5,0">
-                                                                <GradientStop
-                                                                Color="{StaticResource SelectionUnfocusedInnerFillColor1}"
-                                                                Offset="0" />
-
-                                                                <GradientStop
-                                                                Color="{StaticResource SelectionUnfocusedInnerFillColor2}"
-                                                                Offset="0.5" />
-                                                                <GradientStop
-                                                                Color="{StaticResource SelectionUnfocusedInnerFillColor3}"
-                                                                Offset="0.511" />
-                                                                <GradientStop
-                                                                Color="{StaticResource SelectionUnfocusedInnerFillColor4}"
-                                                                Offset="1" />
-                                                            </LinearGradientBrush>
-                                                        </Border.Background>
-
-                                                    </Border>
-                                                </Border>
-
-                                                <!-- MouseOver  -->
-                                                <Border SnapsToDevicePixels="true" x:Name="MouseOverVisual"
-                                                Opacity="0"
-                                                BorderBrush="{StaticResource MouseOverOuterBorderBrush}"
-                                                BorderThickness="1" CornerRadius="3">
-                                                    <Border.Background>
-                                                        <LinearGradientBrush EndPoint="0.5,1"
-                                                        StartPoint="0.5,0">
-                                                            <GradientStop
-                                                            Color="{StaticResource MouseOverOuterFillColor1}"
-                                                            Offset="0" />
-                                                            <GradientStop
-                                                            Color="{StaticResource MouseOverOuterFillColor2}"
-                                                            Offset="1" />
-                                                        </LinearGradientBrush>
-                                                    </Border.Background>
-                                                    <Border CornerRadius="2"
-                                                    BorderBrush="{StaticResource MouseOverInnerBorderBrush}"
-                                                    BorderThickness="2">
-                                                        <Border.Background>
-                                                            <LinearGradientBrush EndPoint="0.5,1"
-                                                            StartPoint="0.5,0">
-                                                                <GradientStop
-                                                                Color="{StaticResource MouseOverInnerFillColor1}"
-                                                                Offset="0" />
-                                                                <GradientStop
-                                                                Color="{StaticResource MouseOverInnerFillColor2}"
-                                                                Offset="0.5" />
-                                                                <GradientStop
-                                                                Color="{StaticResource MouseOverInnerFillColor3}"
-                                                                Offset="0.511" />
-                                                                <GradientStop
-                                                                Color="{StaticResource MouseOverInnerFillColor4}"
-                                                                Offset="1" />
-                                                            </LinearGradientBrush>
-                                                        </Border.Background>
-                                                    </Border>
-                                                </Border>
-
-                                                <!-- Focus -->
-                                                <Rectangle SnapsToDevicePixels="true" x:Name="FocusVisual"
-                                                RadiusX="3" RadiusY="3" Visibility="Collapsed"
-                                                Grid.Column="3" Grid.ColumnSpan="2"
-                                                Stroke="{StaticResource FocusBrush}"
-                                                StrokeThickness="0.75" StrokeDashArray="1,2"
-                                                IsHitTestVisible="False" />
-                                                <GridViewRowPresenter x:Name="Header"
-                                                VerticalAlignment="Center"  
-                                                HorizontalAlignment="Left" Margin="5 5 5 5"
-                                                Content="{TemplateBinding Header}"
-                                                Columns="{Binding Path=Columns,RelativeSource={RelativeSource AncestorType={x:Type local:CustomTreeListView}}}">
-                                                </GridViewRowPresenter>
-                                            </Grid>
-                                        </Border>
-                                        <!-- Items Container -->
-                                        <ItemsPresenter Grid.Row="1"  x:Name="ItemsContainer" Visibility="Collapsed" />
-                                        <!--/ Items Container -->
-
-                                    </Grid>
-                                </Border>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <!--<Trigger Property="{Binding IsSelected, Source=DataContext}" Value="true">
-                                    <Setter Property="Visibility" TargetName="SelectionVisual"
-                                            Value="Visible" />
-                                </Trigger>-->
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="IsSelected" Value="true" />
-                                        <Condition Property="IsSelectionActive" Value="false" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="Visibility" TargetName="SelectionUnfocusedVisual" Value="Visible" />
-                                </MultiTrigger>
-                                <Trigger Property="IsFocused" Value="true">
-                                    <Setter Property="Visibility" TargetName="FocusVisual" Value="Visible" />
-                                </Trigger>
-
-                                <Trigger Property="IsEnabled" Value="false">
-                                    <Setter Property="Opacity" TargetName="RootElement" Value="0.5" />
-                                </Trigger>
-
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="HasItems" Value="false" />
-                                        <Condition Property="IsExpanded" Value="true" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="Background" TargetName="RootElement" Value="{StaticResource HeaderBrush}" />
-                                    <Setter Property="BorderThickness" TargetName="bElement" Value="2" />
-                                    <Setter TargetName="ItemsContainer" Property="Visibility" Value="Visible" />
-                                    <MultiTrigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation
-                                                        Storyboard.TargetName="ItemsContainer"
-                                                        Storyboard.TargetProperty="Opacity"
-                                                        From="0.1" To="1.0" Duration="0:0:0.2" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </MultiTrigger.EnterActions>
-
-                                </MultiTrigger>
-
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="HasItems" Value="true" />
-                                        <Condition Property="IsExpanded" Value="true" />
-                                    </MultiTrigger.Conditions>
-                                    <Setter Property="Background" Value="Gray" />
-                                    <Setter Property="Foreground" Value="White" />
-                                    <Setter Property="FontWeight" Value="Bold" />
-                                    <Setter TargetName="ItemsContainer" Property="Visibility" Value="Visible" />
-                                    <Setter Property="Background" TargetName="RootElement" Value="{StaticResource HeaderBrush}" />
-                                    <Setter Property="BorderThickness" TargetName="bElement" Value="2" />
-                                </MultiTrigger>
-
-
-                                <EventTrigger RoutedEvent="UIElement.MouseEnter"
-                                        SourceName="HeaderRow">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                    Storyboard.TargetName="MouseOverVisual" To="0.5"
-                                                    Duration="0:0:0.2" />
-
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="UIElement.MouseLeave"
-                                        SourceName="HeaderRow">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                    Storyboard.TargetName="MouseOverVisual" To="0"
-                                                    Duration="0:0:0.2" />
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style TargetType="{x:Type local:CustomTreeListView}">
-                <Setter Property="Background" Value="#FFFFFFFF" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type local:CustomTreeListView}">
-                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-                                <DockPanel>
-                                    <GridViewHeaderRowPresenter Columns="{Binding Path=Columns,RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Top" Height="60" >
-                                    </GridViewHeaderRowPresenter>
-                                    <ScrollViewer Padding="{TemplateBinding Padding}" IsTabStop="False" x:Name="ScrollViewer" BorderThickness="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                        <ItemsPresenter />
-                                    </ScrollViewer>
-                                </DockPanel>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <local:DatabindingDebugConverter x:Key="debugConverter" />
-            <local:SelectedColorConverter x:Key="selectedColorConverter" />
-
-        </Grid.Resources>
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
-            <local:CustomTreeListView x:Name="lv" KeyboardNavigation.TabNavigation="Contained" >
+
+            <local:CustomTreeListView x:Name="lv" KeyboardNavigation.TabNavigation="Continue" >
                 <local:CustomTreeListView.Columns>
                     <GridViewColumn Header="" Width="40" CellTemplate="{StaticResource ct}" />
-                    <local:CustomGridViewColumn Header="Name" BindingName="{Binding Name,Converter={StaticResource debugConverter}}" Width="150"  />
-                    <local:CustomGridViewColumn Header="Start Frame" Width="100"  BindingName="{Binding StartFrame}"  />
-                    <local:CustomGridViewColumn Header="End Frame" Width="100"  BindingName="{Binding EndFrame}" />
-                    <local:CustomGridViewColumn Header="Tank Length" Width="100"  BindingName="{Binding TankLength}" />
-                    <local:CustomGridViewColumn Header="Overflow Outlet&#x0d;&#x0a;Above Baseline (mm)" Width="150" />
+                    
+                    <local:CustomGridViewColumn Header="Name" Width="150" BindingName="Name" />
+                    <local:CustomGridViewColumn Header="Start Frame" Width="100"  BindingName="StartFrame" />
+                    <local:CustomGridViewColumn Header="End Frame" Width="100"  BindingName="EndFrame" />
+                    <local:CustomGridViewColumn Header="Tank Length" Width="100"  BindingName="TankLength;oneway" />
+                    <local:CustomGridViewColumn Header="Overflow Outlet&#x0d;&#x0a;Above Baseline (mm)" BindingName="OverflowPosition"  Width="150" />
+
                 </local:CustomTreeListView.Columns>
 
                 <local:CustomTreeListView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}" />
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}"  />
                 </local:CustomTreeListView.ItemTemplate>
+
             </local:CustomTreeListView>
 
-                <ItemsControl x:Name="ic"  Grid.Column="1" >
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
+            <StackPanel Orientation="Vertical" Grid.Column="1">
 
-                            <Canvas Background="Black" >
+                <Label Content="{Binding ship.Name,ElementName=Win1}" />
+                <ComboBox x:Name="cmbFrames" DisplayMemberPath="data" SelectedIndex="{Binding ship.CurFrame, ElementName=Win1}" />
+                
+                <Grid>
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Slider Grid.Column="0" Minimum="1" Maximum="50" IsSnapToTickEnabled="True" x:Name="slideTrans" Value="{Binding ship.CurFrame, ElementName=Win1}" />
+                    <Label Grid.Column="1" Content="{Binding ElementName=slideTrans,Path=Value}" />
+                    
+                </Grid>
+                
+                <ItemsControl x:Name="ic" ItemsPanel="{StaticResource PathDisplay}" >
 
-                            </Canvas>
-
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate >
-
+                        <DataTemplate>
                             <Grid>
-                                <Path Stroke="White" StrokeThickness="2" UIElement.MouseLeftButtonDown="Path_MouseLeftButtonDown" Data="{Binding Path, Converter={StaticResource debugConverter}}"  >
+                                <Path Stroke="{StaticResource CanvasFG}" StrokeThickness="2" UIElement.MouseLeftButtonDown="Path_MouseLeftButtonDown" Data="{Binding Path}"  >
                                     <Path.Fill>
                                         <SolidColorBrush x:Name="redBrush" Color="{Binding IsSelected, Converter={StaticResource selectedColorConverter},Mode=TwoWay,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" />
                                     </Path.Fill>
 
                                     <Path.Triggers>
+
                                         <EventTrigger RoutedEvent="UIElement.MouseEnter">
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="redBrush" Storyboard.TargetProperty="Color" To="Green" Duration="0:0:0.2" />
-                                                    
+                                                    <ColorAnimation Storyboard.TargetName="redBrush" Storyboard.TargetProperty="Color" To="Green" Duration="0:0:0" />
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </EventTrigger>
@@ -433,7 +78,7 @@
                                         <EventTrigger RoutedEvent="UIElement.MouseLeave">
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="redBrush" Storyboard.TargetProperty="Color" To="{Binding IsSelected, Converter={StaticResource selectedColorConverter},NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"  Duration="0:0:0.2" />
+                                                    <ColorAnimation Storyboard.TargetName="redBrush" Storyboard.TargetProperty="Color" To="{Binding IsSelected, Converter={StaticResource selectedColorConverter},NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"  Duration="0:0:0" />
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </EventTrigger>
@@ -441,9 +86,14 @@
                                 </Path>
                             </Grid>
                         </DataTemplate>
+
                     </ItemsControl.ItemTemplate>
+
                 </ItemsControl>
+
+            </StackPanel>
             
+
 
         </Grid>
         <Button Grid.Row="1" Content="Ok" ButtonBase.Click="Button_Click" />

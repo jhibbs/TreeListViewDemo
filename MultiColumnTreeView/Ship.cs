@@ -11,6 +11,35 @@ namespace MultiColumnTreeView
 {
     public class Ship : INotifyPropertyChanged
     {
+
+        private int _curFrame = 14;
+        public int CurFrame
+        {
+            get { return _curFrame; }
+            set
+            {
+                if (_curFrame != value)
+                {
+                    _curFrame = value;
+                    NotifyPropertyChanged("CurFrame");
+                }
+            }
+        }
+
+        private string _name = "Ship Name";
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    NotifyPropertyChanged("Name");
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(String info)

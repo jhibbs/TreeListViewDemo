@@ -111,6 +111,32 @@ namespace MultiColumnTreeView
             }
         }
 
+        public string Name
+        {
+            set
+            { // do nothing 
+            }
+            get
+            {
+                    return "";
+            }
+        }
+
+        public int TankLength
+        {
+            get { return 0; }
+        }
+
+        public int OverflowPosition
+        {
+            set { }
+            get { return 0; }
+        }
+
+        public List<object> Children
+        {
+            get {return new List<object>();}
+        }
 
     }
 }

@@ -14,26 +14,26 @@ using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 using System.Globalization;
 using System.Diagnostics;
+using Microsoft.Windows.Controls;
 
 namespace MultiColumnTreeView
 {
     public class CustomTreeListView : TreeView
     {
-        public System.Windows.Controls.GridViewColumnCollection Columns
+        public GridViewColumnCollection Columns
         {
             get
             {
-
                 if (columns == null)
                 {
-                    columns = new System.Windows.Controls.GridViewColumnCollection();
+                    columns = new GridViewColumnCollection();
                 }
 
                 return columns;
             }
         }
 
-        private System.Windows.Controls.GridViewColumnCollection columns;
+        private GridViewColumnCollection columns;
 
     }
 

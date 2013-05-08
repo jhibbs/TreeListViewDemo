@@ -13,7 +13,8 @@ namespace MultiColumnTreeView
 
         public BallastSpace(string name)
         {
-            Name = _name;
+            Name = name;
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -57,6 +58,13 @@ namespace MultiColumnTreeView
             _children.Add(spaceChild);
             NotifyPropertyChanged("Children");
             NotifyPropertyChanged("HasChildren");
+            spaceChild.PropertyChanged += new PropertyChangedEventHandler(spaceChild_PropertyChanged);
+        }
+
+        void spaceChild_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            NotifyPropertyChanged("StartFrame");
+            NotifyPropertyChanged("EndFrame");
         }
 
         public void RemoveChild(SpaceChild spaceChild)
@@ -102,9 +110,13 @@ namespace MultiColumnTreeView
 
         public int StartFrame
         {
+            set
+            {
+                // do nothing
+            }
             get
             {
-                int val = int.MaxValue;
+                int val = _children.Count == 0 ? 0 : int.MaxValue;
 
                 foreach (SpaceChild sc in _children)
                 {
@@ -116,9 +128,13 @@ namespace MultiColumnTreeView
 
         public int EndFrame
         {
+            set
+            {
+                // do nothing
+            }
             get
             {
-                int val = int.MinValue;
+                int val = _children.Count == 0 ? 0 : int.MinValue;
 
                 foreach (SpaceChild sc in _children)
                 {

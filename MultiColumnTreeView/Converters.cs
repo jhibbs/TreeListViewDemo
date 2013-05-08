@@ -71,7 +71,7 @@ namespace MultiColumnTreeView
         public object Convert(object value, Type targetType,
             object parameter, CultureInfo culture)
         {
-            // Debugger.Break();
+            Debugger.Break();
             return value;
         }
 
@@ -93,7 +93,7 @@ namespace MultiColumnTreeView
 
             if (value is bool)
             {
-                ret = ((bool)value ? Brushes.LightGreen : Brushes.Orange);
+                ret = ((bool)value ? Brushes.LightGreen : Brushes.Transparent);
             }
 
             return ret.ToString();

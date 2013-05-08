@@ -1,0 +1,76 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" x:Name="GroupBackground" x:Key="GroupBackground">
+        <GradientStop Color="#E0F1FF" Offset="0" />
+        <GradientStop Color="#AAD9FF" Offset="0.4" />
+        <GradientStop Color="#E0F1FF"  Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HeaderBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="AliceBlue" Offset="0.0" />
+        <GradientStop Color="LightBlue" Offset="0.9" />
+        <GradientStop Color="White" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" x:Key="ToggleButtonBG">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Color="White" Offset=".2" />
+            <GradientStop Color="#FFC0B7A6" Offset="1" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="CanvasBG" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="AliceBlue" Offset="0.0" />
+        <GradientStop Color="LightBlue" Offset="0.9" />
+        <GradientStop Color="White" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="CanvasFG" Color="Black" />
+
+    <SolidColorBrush x:Key="LineColor" Color="#FF000000" />
+    <SolidColorBrush x:Key="FocusBrush" Color="#FF000000" />
+    <SolidColorBrush x:Key="SelectionOuterBorderBrush" Color="#FFA8C9D8" />
+    <Color x:Key="SelectionOuterFillColor1">#FF00CCFF</Color>
+    <Color x:Key="SelectionOuterFillColor2">#FF9BB1FF</Color>
+    <SolidColorBrush x:Key="SelectionInnerBorderBrush" Color="#FFFFFFFF" />
+    <Color x:Key="SelectionInnerFillColor1">#E5FFFFFF</Color>
+    <Color x:Key="SelectionInnerFillColor2">#4DFFFFFF</Color>
+    <Color x:Key="SelectionInnerFillColor3">#00FFFFFF</Color>
+    <Color x:Key="SelectionInnerFillColor4">#33FFFFFF</Color>
+
+    <SolidColorBrush x:Key="SelectionUnfocusedOuterBorderBrush" Color="#FFA8C9D8" />
+    <Color x:Key="SelectionUnfocusedOuterFillColor1">#FFB7C6D0</Color>
+    <Color x:Key="SelectionUnfocusedOuterFillColor2">#FFA2A9C1</Color>
+
+    <SolidColorBrush x:Key="SelectionUnfocusedInnerBorderBrush" Color="#FFFFFFFF" />
+    <Color x:Key="SelectionUnfocusedInnerFillColor1">#E5FFFFFF</Color>
+    <Color x:Key="SelectionUnfocusedInnerFillColor2">#4DFFFFFF</Color>
+    <Color x:Key="SelectionUnfocusedInnerFillColor3">#00FFFFFF</Color>
+    <Color x:Key="SelectionUnfocusedInnerFillColor4">#33FFFFFF</Color>
+
+    <SolidColorBrush x:Key="MouseOverOuterBorderBrush" Color="#FFC3DCE8" />
+    <Color x:Key="MouseOverOuterFillColor1">#FF00CCFF</Color>
+    <Color x:Key="MouseOverOuterFillColor2">#FF9BB1FF</Color>
+
+    <SolidColorBrush x:Key="MouseOverInnerBorderBrush"
+                                            Color="#FFFFFFFF"></SolidColorBrush>
+    <Color x:Key="MouseOverInnerFillColor1">#FFFFFFFF</Color>
+    <Color x:Key="MouseOverInnerFillColor2">#99FFFFFF</Color>
+    <Color x:Key="MouseOverInnerFillColor3">#4CFFFFFF</Color>
+    <Color x:Key="MouseOverInnerFillColor4">#66FFFFFF</Color>
+
+    <SolidColorBrush x:Key="LoadingVisualBrush" Color="#FF1562B7"></SolidColorBrush>
+
+    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" x:Key="SomeBorderOuterBG">
+        <GradientStop Color="{StaticResource SelectionOuterFillColor1}" Offset="0" />
+        <GradientStop Color="{StaticResource SelectionOuterFillColor2}" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" x:Key="SomeBorderInnerBG">
+        <GradientStop Color="{StaticResource SelectionInnerFillColor1}" Offset="0" />
+        <GradientStop Color="{StaticResource SelectionInnerFillColor2}" Offset="0.5" />
+        <GradientStop Color="{StaticResource SelectionInnerFillColor3}" Offset="0.511" />
+        <GradientStop Color="{StaticResource SelectionInnerFillColor4}" Offset="1" />
+    </LinearGradientBrush>
+
+</ResourceDictionary>
